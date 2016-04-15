@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<installation version="1.0">
+
+	<info>
+		<appname>Log Analys</appname>
+		<appversion>1.0</appversion>
+		<authors>
+			<author name="wora" email="alican.akkus@alicanakkus.com." />
+		</authors>
+		<url>http://www.alicanakkus.com</url>
+		<appsubpath>LogAnalys</appsubpath>
+	</info>
+
+	<locale>
+		<langpack iso3="eng" />
+	</locale>
+
+	<listeners>
+		<listener installer="com.j32bit.installer.listener.InstallerListener" />
+	</listeners>
+
+	<panels>
+		<panel classname="HelloPanel" />
+		<panel classname="TargetPanel" />
+		<panel classname="InstallPanel" />
+		<panel classname="ProcessPanel" />
+		<panel classname="UserInputPanel" id="panel.8.0" />
+	</panels>
+
+	<packs>
+		<pack name="Application Pack" required="yes">
+			<description>Application Pack</description>
+			<fileset dir="pack" targetdir="$INSTALL_PATH" override="true" />
+		</pack>
+	</packs>
+
+	<resources>
+		<!-- Set the default installation directory shown in the TargetPanel -->
+		<res id="TargetPanel.dir.windows" src="spec/targetPanel.dir.windows.txt" />
+		<res id="CustomLangpack.xml_eng" src="lang/eng.xml" />
+		<res id="userInputSpec.xml" src="spec/UserInputPanelSpec.xml" />
+		<res id="ProcessPanel.Spec.xml" src="spec/ProcessPanelSpec.xml" />
+		<!-- -->
+		<res id="LicencePanel.licence" src="pack/Licence.txt" />
+		<res id="Heading.image" src="image/heading.png" />
+	</resources>
+
+	<jar src="../lib/Installer.jar" />
+	<jar src="pack/lib/log4j-1.2.17.jar" />
+
+	<guiprefs height="480" resizable="yes" width="650">
+		<laf name="looks">
+			<os family="unix" />
+		</laf>
+		<laf name="looks">
+			<os family="windows" />
+			<!-- TODO: extwin -> windows -->
+			<param name="variant" value="windows" />
+		</laf>
+
+		<modifier key="useButtonIcons" value="no" />
+		<modifier key="useLabelIcons" value="no" />
+		<modifier key="layoutAnchor" value="NORTHWEST" />
+		<modifier key="labelGap" value="2" />
+		<modifier key="useHeadingPanel" value="yes" />
+		<modifier key="headingLineCount" value="1" />
+		<modifier key="headingFontSize" value="1.5" />
+		<modifier key="headingBackgroundColor" value="0x00ffffff" />
+		<modifier key="headingPanelCounter" value="progressbar" />
+		<modifier key="headingPanelCounterPos" value="inNavigationPanel" />
+	</guiprefs>
+
+</installation>

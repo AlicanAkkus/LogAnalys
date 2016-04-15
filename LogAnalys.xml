@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analys>
+    
+
+    <!-- analysing of proccessed log data -->
+	<monitorings>
+		<!-- one or more monitoring different port time at same time -->
+		<monitoring>
+			<param name="contextPath" value="LogAnalysis.war" />
+			<param name="portNumber" value="10800" />
+			<param name="https" value="true" />
+			<param name="keystoreFile" value="web/conf" />
+			<param name="keystorePassword" value="wora" />
+		</monitoring>
+		<monitoring>
+			<param name="contextPath" value="LogAnalysis.war" />
+			<param name="portNumber" value="10803" />
+			<param name="https" value="false" />
+			<param name="keystoreFile" value="web/conf" />
+			<param name="keystorePassword" value="wora" />
+		</monitoring>	
+	</monitorings>
+
+	<destinations>
+		<destination id="fileDestination">
+			<param name="fileName" value="MyLogAnalysis"/>
+			<param name="fileExtension" value="DD-MMM-YYYY"/>
+			<param name="exportType" value="xml" />
+			<param name="fileSize" value="100MB"/>
+			<param name="fileLocation" value="/home/wora/Analysis"/>
+		</destination>
+		<destination id="dbDestination">
+			<param name="dbDriver" value="com.postgresql.Driver"/>
+			<param name="dbUrl" value="jdbc:postgresql://localhost:5432/Analysis"/>
+			<param name="dbUser" value="wora"/>
+			<param name="dbPassword" value="wora"/>
+		</destination>
+	</destinations>
+	
+	<files>
+	    <file id="myLog">
+	        <param name="fileName" value="MyLog"/>
+	        <param name="fileLocation" value="hdfs://localhost:54310"/>
+	    </file>
+	</files>
+
+	<templates>
+		<template id="methodTemplate" name="MethodLog">
+			<param name="startChar" value="2"/> <!-- ASCII 2 = STX -->
+			<param name="endChar" value="3"/> <!-- ASCII 3 = ETX -->
+			<param name="delimeterChar" value="26"/> <!-- ASCII 26 = SUB -->
+			<!-- sample log data : <STX><SUB>05 Jan 2016 10:57:21<SUB>contextInitialized<SUB>Log4j and Scheduler job initialized<SUB>175<SUB><ETX>  -->
+			<param name="dataLength" value="4">
+				<param name="dateOfData" type="date" sequence="1" description="log data date"/>
+				<param name="methodName" type="string" sequence="2" description="method name"/>
+				<param name="methodDesc" type="string" sequence="3" description="method description"/>
+				<param name="methodRunningTime" type="integer" sequence="4" description="method running time"/>
+			</param>
+			<param name="pattern" value="a-zA-z0-9" /> <!-- text pattern -->
+			
+			<destination name="fileDest" source="fileDestination" />
+			<destination name="DbDest" source="dbDestination" />
+		</template>
+		
+		<template id="loopTemplate" name="LoopLog">
+			<param name="startChar" value="2"/> <!-- ASCII 2 = STX -->
+			<param name="endChar" value="3"/> <!-- ASCII 3 = ETX -->
+			<param name="delimeterChar" value="21"/> <!-- ASCII 26 = NAK -->
+			<!-- sample log data : <STX><NAK>05 Jan 2016 10:57:21<NAK>convert object to person<NAK>102<ETX>  -->
+			<param name="dataLength" value="3">
+				<param name="dateOfData" type="date" sequence="1" description="log data date"/>
+				<param name="loopDesc" type="string" sequence="2" description="loop desciption"/>
+				<param name="loopSize" type="integer" sequence="3" description="loop size"/>
+			</param>
+			<param name="pattern" value="a-zA-z0-9" /> <!-- text pattern -->
+			
+			<file name="myFile" source="myLog" />
+			<destination name="DbDest" source="dbDestination" />
+		</template>
+	</templates>
+
+</analys>

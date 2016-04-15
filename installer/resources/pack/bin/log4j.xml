@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+
+	<!-- -->
+	<!-- TOFIntegratorV2.log -->
+	<!-- -->
+	<appender name="integratorlog" class="com.j32bit.tof.logging.J32BitDatedFileAppender">
+		<param name="logDirectory" value="../logs" />
+		<param name="logPrefix" value="TOFIntegrator" />
+		<param name="maxFileSize" value="200" />
+		<param name="CompressBackups" value="true" />
+		<param name="MaxNumberOfDays" value="5" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %c %t %-5p: %m%n" />
+		</layout>
+	</appender>
+
+	<!-- -->
+	<!-- TOFIntegratorV2Error.log -->
+	<!-- -->
+	<appender name="errorlog" class="com.j32bit.tof.logging.J32BitDatedFileAppender">
+		<param name="logDirectory" value="../logs" />
+		<param name="logPrefix" value="TOFIntegratorError" />
+		<param name="maxFileSize" value="200" />
+		<param name="CompressBackups" value="true" />
+		<param name="MaxNumberOfDays" value="5" />
+		<param name="Threshold" value="ERROR" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %c %t %-5p: %m%n" />
+		</layout>
+	</appender>
+
+	<!-- -->
+	<!-- Channel.log -->
+	<!-- -->
+	<appender name="channellog" class="com.j32bit.tof.logging.J32BitDatedFileAppender">
+		<param name="logDirectory" value="../logs" />
+		<param name="logPrefix" value="Channel" />
+		<param name="maxFileSize" value="200" />
+		<param name="CompressBackups" value="true" />
+		<param name="MaxNumberOfDays" value="5" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %c %t %-5p: %m%n" />
+		</layout>
+	</appender>
+
+	<!-- -->
+	<!-- MailAppender -->
+	<!-- -->
+	<appender name="mail" class="com.j32bit.tof.logging.J32BitSMTPAppender">
+		<param name="SMTPDebug" value="false" />
+		<param name="SMTPHost" value="10.2.41.45" />
+		<param name="Subject" value="TOF Integrator V2 Fatal Error (Local)" />
+		<param name="Template" value="xsl/mail.xsl" />
+		<param name="From" value="TOF Integrator V2 &lt;no_reply@32bit.com.tr&gt;" />
+		<param name="To" value="ferhat.kel@32bit.com.tr" />
+		<param name="cc" value="" />
+		<param name="header" value="" />
+		<param name="footer" value="Please don't reply" />
+		<param name="BufferSize" value="30" />
+		<param name="SendInterval" value="600" />
+		<param name="Threshold" value="FATAL" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %c %t %-5p: %m%n" />
+		</layout>
+	</appender>
+
+	<!-- -->
+	<!-- ConsoleAppender -->
+	<!-- -->
+	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %c %t %-5p: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="asyncMailAppender" class="org.apache.log4j.AsyncAppender">
+		<appender-ref ref="mail" />
+	</appender>
+
+	<!-- -->
+	<!-- Asynchronous Mai lAppender -->
+	<!-- -->
+	<appender name="asyncMailAppender" class="org.apache.log4j.AsyncAppender">
+		<appender-ref ref="mail" />
+	</appender>
+
+	<logger name="org.apache">
+		<level value="info" />
+	</logger>
+
+	<logger name="ChannelLogger" additivity="false">
+		<level value="trace" />
+		<appender-ref ref="channellog" />
+	</logger>
+
+	<root>
+		<level value="debug" />
+		<!--<appender-ref ref="stdout" />-->
+		<appender-ref ref="integratorlog" />
+		<appender-ref ref="errorlog" />
+	</root>
+
+
+</log4j:configuration>

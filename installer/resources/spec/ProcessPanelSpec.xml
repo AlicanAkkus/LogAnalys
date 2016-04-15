@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<processing>
+
+	<job name="copy jre">
+		<executeclass name="com.j32bit.installer.process.CopyJREProcess" />
+	</job>
+
+	<job name="batch files replace">
+		<executeclass name="com.j32bit.installer.process.ReplaceBatchFilesProcess" />
+	</job>
+
+	<job name="install service">
+		<os family="windows" />
+		<executeclass name="com.j32bit.installer.process.WindowsServiceProcess">
+			<arg>install</arg>
+		</executeclass>
+	</job>
+</processing>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<userInput>
+
+	<panel id="panel.8.0">
+		<field type="staticText" txt="Installation has completed successfully." />
+		<field type="space" />
+		<field type="space" />
+		<field type="staticText" txt="An uninstaller program has been created in:" />
+		<field type="staticText" txt="$UNINSTALL_PATH" />
+	</panel>
+
+</userInput>
