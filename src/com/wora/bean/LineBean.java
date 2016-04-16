@@ -1,36 +1,40 @@
 package com.wora.bean;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
-import com.wora.enums.LineEnum;
-
-public abstract class LineBean {
-	private LineEnum type;
-	private String analysType = "DEFAULT";
-	SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm:ss", Locale.ENGLISH);
-
-	public LineBean() {
+public class LineBean {
+	String name;
+	String descpriton;
+	int sequence;
+	
+	
+	public LineBean(String name, String descpriton, int sequence) {
+		super();
+		this.name = name;
+		this.descpriton = descpriton;
+		this.sequence = sequence;
 	}
-
-	public LineBean(LineEnum type) {
-		this.type = type;
+	public String getName() {
+		return name;
 	}
-
-	public LineEnum getType() {
-		return type;
+	public void setName(String name) {
+		this.name = name;
 	}
-
-	public void setType(LineEnum type) {
-		this.type = type;
+	public String getDescpriton() {
+		return descpriton;
 	}
-
-	public String getAnalysType() {
-		return analysType;
+	public void setDescpriton(String descpriton) {
+		this.descpriton = descpriton;
 	}
-
-	public void setAnalysType(String analysType) {
-		this.analysType = analysType;
+	public int getSequence() {
+		return sequence;
 	}
-
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
+	}
+	
+	@Override
+	public String toString() {
+		return "LineBean [name=" + name + ", descpriton=" + descpriton + ", sequence=" + sequence + "]";
+	}
+	
 }
