@@ -37,9 +37,9 @@ public class Analys {
 	Logger logger;
 	AbstractDBService dbService;
 	private static Analys instance;
-	private ConcurrentHashMap<String, HadoopTemplate> templates = new ConcurrentHashMap<String, HadoopTemplate>();
-	private ConcurrentHashMap<String, HadoopFile> files = new ConcurrentHashMap<String, HadoopFile>();
-	private ConcurrentHashMap<String, AbstractAdaptor> adaptors = new ConcurrentHashMap<String, AbstractAdaptor>();
+	private ConcurrentHashMap<String, HadoopTemplate> templatesPool = new ConcurrentHashMap<String, HadoopTemplate>();
+	private ConcurrentHashMap<String, HadoopFile> filesPool = new ConcurrentHashMap<String, HadoopFile>();
+	private ConcurrentHashMap<String, AbstractAdaptor> adaptorsPool = new ConcurrentHashMap<String, AbstractAdaptor>();
 
 	public Analys() {
 		DOMConfigurator.configure("templates/log4j.xml");
@@ -74,11 +74,73 @@ public class Analys {
 		Analys.getInstance().initializeServices(document);
 	}
 
-	public void initializeServices(Document document) throws TransformerException {
+	public void initializeServices(Document document) throws Exception {
+		createFiles(document);
+		createDestinations(document);
 		createTemplates(document);
 	}
 
-	public void createTemplates(Document document) throws TransformerException {
+	public void createFiles(Document document) throws Exception {
+		Element filesElement = XmlUtils.findElement(document, "//files");
+		NodeList files = XPathAPI.selectNodeList(filesElement, "file");
+		logger.info(files.getLength() + " found in a configüration.");
+
+		for (int i = 0; i < files.getLength(); i++) {
+			Element element = (Element) files.item(i);
+			HadoopFile hadoopFile = new HadoopFile();
+			hadoopFile.setId(element.getAttribute("id"));
+
+			NodeList params = XPathAPI.selectNodeList(element, "param");
+			for (int j = 0; j < params.getLength(); j++) {
+				Element paramElement = (Element) params.item(j);
+
+				if ("fileName".equalsIgnoreCase(paramElement.getAttribute("name"))) {
+					hadoopFile.setFileName(paramElement.getAttribute("value"));
+				}
+				if ("fileLocation".equalsIgnoreCase(paramElement.getAttribute("name"))) {
+					hadoopFile.setHdfsLocation(paramElement.getAttribute("value"));
+				}
+			}
+
+			filesPool.put(hadoopFile.getId(), hadoopFile);
+		}
+	}
+
+	public void createDestinations(Document document) throws Exception {
+		// <destinations>
+		// <destination id="fileDestination" class="com.wora.adaptor.FileAdaptor">
+		// <param name="fileName" value="MyLogAnalysis" />
+		// <param name="fileExtension" value="DD-MMM-YYYY" />
+		// <param name="exportType" value="xml" />
+		// <param name="fileSize" value="100MB" />
+		// <param name="fileLocation" value="/home/wora/Analysis" />
+		// </destination>
+		// <destination id="dbDestination" class="com.wora.adaptor.DbAdaptor">
+		// <param name="dbDriver" value="com.postgresql.Driver" />
+		// <param name="dbUrl" value="jdbc:postgresql://localhost:5432/Analysis" />
+		// <param name="dbUser" value="wora" />
+		// <param name="dbPassword" value="wora" />
+		// </destination>
+		// </destinations>
+		
+		Element destinations =  XmlUtils.findNode(document, "//destinations");
+		NodeList destinationsNodes = XPathAPI.selectNodeList(destinations, "destination");
+		logger.info(destinationsNodes.getLength() + " destinations found.");
+
+		for(int i = 0; i < destinationsNodes.getLength(); i++){
+			Element destination = (Element) destinationsNodes.item(i);
+			String destionationID = destination.getAttribute("id");
+			
+			AbstractAdaptor adaptor = (AbstractAdaptor)Class.forName(destination.getAttribute("class")).newInstance();
+			adaptor.init(destination);
+			
+			adaptorsPool.put(destionationID, adaptor);
+		}
+		
+		
+	}
+
+	public void createTemplates(Document document) throws Exception {
 
 		Element templatesElement = XmlUtils.findNode(document, "//templates");
 		NodeList templateNodes = XPathAPI.selectNodeList(templatesElement, "template");
@@ -90,21 +152,48 @@ public class Analys {
 			HadoopTemplate hadoopTemplate = new HadoopTemplate();
 			hadoopTemplate.setId(templateElement.getAttribute("id"));
 			hadoopTemplate.setTemplateName(templateElement.getAttribute("name"));
-			
-			//hadoop file okuyalim.
-			NodeList files = XPathAPI.selectNodeList(templateElement, "/file");
 
+			// hadoop file okuyalim.
+			NodeList files = XPathAPI.selectNodeList(document, "//templates/template[@id = '"+ hadoopTemplate.getId() +"']/file");
+			if (files.getLength() > 1 || files.getLength() == 0) {
+				throw new RuntimeException("Only one file is allowed in template!");
+			}
+			Element fileElement = (Element) files.item(0);
+			String fileSource = fileElement.getAttribute("source");
+			if (filesPool.containsKey(fileSource)) {
+				hadoopTemplate.setHadoopFile(filesPool.get(fileSource));
+			} else {
+				throw new RuntimeException("Defined file not found in files pool!");
+			}
+
+			// hadoop destinationlari okuyalim.
+			NodeList destioanitons = XPathAPI.selectNodeList(templateElement, "//templates/template[@id = '"+ hadoopTemplate.getId() +"']/destination");
+			if (files.getLength() == 0) {
+				throw new RuntimeException("Minimum one destinations required for template!");
+			}
+			LinkedList<AbstractAdaptor> adaptors = new LinkedList<AbstractAdaptor>();
+			for(int ii=0; ii<destioanitons.getLength(); ii++){
+				Element destinationElement = (Element) destioanitons.item(ii);
+				String destSource = destinationElement.getAttribute("source");
+				if (adaptorsPool.containsKey(destSource)) {
+					adaptors.add(adaptorsPool.get(destSource));
+				} else {
+					throw new RuntimeException("Defined destination not found in destinations pool!");
+				}
+			}
+			hadoopTemplate.setAdaptors(adaptors);
 			
-			//paramslari okuyalim.
+			
+			// paramslari okuyalim.
 			HashMap<String, String> params = new HashMap<>();
-			NodeList paramList = XPathAPI.selectNodeList(templateElement, "//param");
+			NodeList paramList = XPathAPI.selectNodeList(templateElement,"//templates/template[@id = '"+ hadoopTemplate.getId() +"']/param" );
 			for (int j = 0; j < paramList.getLength(); j++) {
 				Element param = (Element) paramList.item(j);
 				if (!param.getAttribute("name").equalsIgnoreCase("dataLength")) {
 					params.put(param.getAttribute("name"), param.getAttribute("value"));
 				} else {
 					int length = Integer.valueOf(param.getAttribute("value"));
-					NodeList lineParams = XPathAPI.selectNodeList(templateElement, "//param");
+					NodeList lineParams = XPathAPI.selectNodeList(templateElement, "//templates/template[@id = '"+ hadoopTemplate.getId() +"']/param/param");
 
 					if (length != lineParams.getLength()) {
 						throw new RuntimeException("Number of lengt and params not equals! Lengt : " + length + " and params length : "
@@ -123,7 +212,7 @@ public class Analys {
 				}
 			}
 
-			templates.put(hadoopTemplate.getId(), hadoopTemplate);
+			templatesPool.put(hadoopTemplate.getId(), hadoopTemplate);
 		}
 
 	}

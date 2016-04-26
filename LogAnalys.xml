@@ -22,14 +22,14 @@
 	</monitorings>
 
 	<destinations>
-		<destination id="fileDestination">
+		<destination id="fileDestination" class="com.wora.adaptor.FileAdaptor">
 			<param name="fileName" value="MyLogAnalysis" />
 			<param name="fileExtension" value="DD-MMM-YYYY" />
 			<param name="exportType" value="xml" />
 			<param name="fileSize" value="100MB" />
 			<param name="fileLocation" value="/home/wora/Analysis" />
 		</destination>
-		<destination id="dbDestination">
+		<destination id="dbDestination" class="com.wora.adaptor.DbAdaptor">
 			<param name="dbDriver" value="com.postgresql.Driver" />
 			<param name="dbUrl" value="jdbc:postgresql://localhost:5432/Analysis" />
 			<param name="dbUser" value="wora" />
@@ -58,6 +58,7 @@
 			</param>
 			<param name="pattern" value="a-zA-z0-9" /> <!-- text pattern -->
 
+			<file name="myFile" source="myLog" />
 			<destination name="fileDest" source="fileDestination" />
 			<destination name="DbDest" source="dbDestination" />
 		</template>

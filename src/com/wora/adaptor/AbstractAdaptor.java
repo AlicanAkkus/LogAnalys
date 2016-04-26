@@ -1,10 +1,10 @@
 package com.wora.adaptor;
 
 import java.util.HashMap;
-import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Element;
 
 public abstract class AbstractAdaptor extends Thread{
 	private Logger logger = Logger.getLogger(AbstractAdaptor.class);
@@ -13,9 +13,7 @@ public abstract class AbstractAdaptor extends Thread{
 	HashMap<String, String> customParams = new HashMap<>();
 	Vector<Object> messageQueue = new Vector<>();
 	
-	public void init(Properties properties){
-		
-	}
+	public abstract void init(Element destination);
 	
 	public abstract void processMessage(Object message);
 	

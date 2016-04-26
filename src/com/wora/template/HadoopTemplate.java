@@ -58,6 +58,14 @@ public class HadoopTemplate {
 	public void setHadoopFile(HadoopFile hadoopFile) {
 		this.hadoopFile = hadoopFile;
 	}
+	
+	public LinkedList<AbstractAdaptor> getAdaptors() {
+		return adaptors;
+	}
+
+	public void setAdaptors(LinkedList<AbstractAdaptor> adaptors) {
+		this.adaptors = adaptors;
+	}
 
 	@Override
 	public String toString() {
