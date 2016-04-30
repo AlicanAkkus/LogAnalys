@@ -1,4 +1,20 @@
-2016-04-26 20:59:12 DEBUG Analys:47 - Log4j intitialized..
-2016-04-26 20:59:13 INFO  Analys:86 - 1 found in a configüration.
-2016-04-26 20:59:15 INFO  Analys:128 - 2 destinations found.
-2016-04-26 20:59:18 INFO  Analys:147 - 2 template found.
+2016-04-30 00:30:38 DEBUG Analys:47 - Log4j intitialized..
+2016-04-30 00:30:38 INFO  Analys:87 - 1 found in a configüration.
+2016-04-30 00:30:38 INFO  Analys:129 - 2 destinations found.
+2016-04-30 00:30:38 INFO  Analys:148 - 2 template found.
+2016-04-30 00:30:38 DEBUG Analys:222 - initializeDbService is started.
+2016-04-30 00:30:38 DEBUG AbstractDBService:41 - Db initalizing..
+2016-04-30 00:30:38 DEBUG AbstractDBService:45 - Param length : 7
+2016-04-30 00:30:38 DEBUG AbstractDBService:78 - AbstractDBService [dbConnection=null, jdbcURL=jdbc:h2:mem:bitirme;MODE=Derby, dbName=bitirme, dbUserName=wora, dbPassword=wora, dbValidationQuery=, dbDriver=org.h2.Driver, dbMode=Derby, delay=-1]
+2016-04-30 00:30:38 DEBUG AbstractDBService:94 - get Db Connection 
+2016-04-30 00:30:38 DEBUG AbstractDBService:98 - Connection taken 
+2016-04-30 00:30:38 DEBUG AbstractDBService:81 - Database object is initialized
+2016-04-30 00:30:38 DEBUG AbstractDBService:22 - H2 memory started at : http://127.0.1.1:8082
+2016-04-30 00:30:38 DEBUG AbstractDBService:28 - Checking metadata...
+2016-04-30 00:30:38 DEBUG AbstractDBService:106 - DB connection validating....
+2016-04-30 00:30:38 DEBUG AbstractDBService:112 - Creating statement validateDbConnection : 
+2016-04-30 00:30:38 DEBUG AbstractDBService:47 - Create script : create table MethodLog(ID int not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) , dateOfData varchar, methodName varchar, methodDesc varchar, methodRunningTime varchar )
+2016-04-30 00:30:38 DEBUG AbstractDBService:47 - Create script : create table LoopLog(ID int not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) , dateOfData varchar, loopDesc varchar, loopSize varchar )
+2016-04-30 00:30:38 DEBUG AbstractDBService:175 - DBService - cleanUpDatabase begin..
+2016-04-30 00:30:38 DEBUG AbstractDBService:177 - cleanUpDatabase end..
+2016-04-30 00:30:38 DEBUG Analys:232 - initializeDbService is finished.

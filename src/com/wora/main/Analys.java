@@ -27,7 +27,7 @@ import org.w3c.dom.NodeList;
 import com.wora.adaptor.AbstractAdaptor;
 import com.wora.bean.LineBean;
 import com.wora.db.AbstractDBService;
-import com.wora.db.DerbyDAOImp;
+import com.wora.db.H2DaoImpl;
 import com.wora.file.HadoopFile;
 import com.wora.template.HadoopTemplate;
 import com.wora.util.XmlUtils;
@@ -78,6 +78,7 @@ public class Analys {
 		createFiles(document);
 		createDestinations(document);
 		createTemplates(document);
+		initializeDbService(document);
 	}
 
 	public void createFiles(Document document) throws Exception {
@@ -217,42 +218,18 @@ public class Analys {
 
 	}
 
-	public void initializeDbService() {
+	public void initializeDbService(Document document) {
 		logger.debug("initializeDbService is started.");
 
 		try {
-			dbService = new DerbyDAOImp();
-			// dbService.init(properties);
-			dbService.checkDbMetaData();
+			dbService = new H2DaoImpl();
+			dbService.init(document);
+			dbService.checkDbMetaData(templatesPool);
 		} catch (Exception e) {
 			logger.error(e, e);
 		}
 
 		logger.debug("initializeDbService is finished.");
-	}
-
-	public Properties createPropsFile(String fileName) {
-
-		logger.debug("Properties file creating is started.");
-
-		if (StringUtils.isNotBlank(fileName)) {
-
-			try {
-				File propFile = new File(fileName);
-
-				Properties properties = new Properties();
-				properties.load(new FileInputStream(propFile));
-
-				logger.debug("Properties file is created.");
-				return properties;
-			} catch (Exception e) {
-				logger.error(e, e);
-			}
-
-		}
-
-		return null;
-
 	}
 
 	public void createJob(String jobName, String args[]) {

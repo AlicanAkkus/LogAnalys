@@ -118,5 +118,6 @@
 	<classpathentry kind="lib" path="installer/lib/jsmoothgen-ant.jar"/>
 	<classpathentry kind="lib" path="installer/lib/standalone-compiler.jar"/>
 	<classpathentry kind="lib" path="distsrc/lib/derbyclient.jar"/>
+	<classpathentry kind="lib" path="distsrc/lib/h2-1.4.191.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

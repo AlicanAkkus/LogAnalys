@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analys>
-
+	
+	<database>
+		<param name="driver" value="org.h2.Driver" />
+		<param name="baseUrl" value="jdbc:h2:mem" />
+		<param name="dbName" value="bitirme" />
+		<param name="dbUser" value="wora" />
+		<param name="dbPassword" value="wora" />
+		<param name="mode" value="Derby" />
+		<param name="delay" value="-1" />
+	</database>
 
 	<!-- analysing of proccessed log data -->
 	<monitorings>

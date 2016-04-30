@@ -24,7 +24,7 @@ public class Test implements IOConstant {
 		// tomcat7.startTomcat();
 
 		String text = "02 Jan 2016 06:36:21getChangeDealerEmployee4";
-		ParseLineBean.parseMethod(new Text(text));
+		//ParseLineBean.parseMethod(new Text(text));
 
 	}
 }

@@ -9,37 +9,74 @@ import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
+import org.apache.xpath.XPathAPI;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import com.wora.template.HadoopTemplate;
+import com.wora.util.XmlUtils;
 
 public abstract class AbstractDBService {
 	protected static Logger logger = Logger.getLogger(AbstractDBService.class);
 
 	protected Connection dbConnection = null;
-	protected String jdbcURL = "jdbc:hsqldb:file:tbpapidb";
+	protected String jdbcURL = "jdbc:hsqldb:file:api";
+	protected String dbName = "";
 	protected String dbUserName = "sa";
 	protected String dbPassword = "";
 	protected String dbValidationQuery = "";
 	protected String dbDriver = "org.hsqldb.jdbcDriver";
+	protected String dbMode = "";
+	protected int delay = -1;
 
 	protected static Map<String, PreparedStatement> statementMap = Collections.synchronizedMap(new HashMap<String, PreparedStatement>());
-
-	public abstract void checkDbMetaData();
-
-	public abstract void maintainTables();
+	public abstract void checkDbMetaData(ConcurrentHashMap<String, HadoopTemplate> templatePool);
 
 	// Initialize the data fields
-	public void init(Properties appProps) throws Exception {
-
+	public void init(Document document) throws Exception {
 		logger.debug("Db initalizing..");
 
-		jdbcURL = appProps.getProperty("database.jdbc.url", "").trim();
-		dbUserName = appProps.getProperty("database.username", "").trim();
-		dbPassword = appProps.getProperty("database.password", "").trim();
-		dbValidationQuery = appProps.getProperty("database.validation.query", "").trim();
-		dbDriver = appProps.getProperty("database.jdbc.driver", "").trim();
-
+		Element databaseElement = XmlUtils.findNode(document, "//database");
+		NodeList paramElements = XPathAPI.selectNodeList(databaseElement, "param");
+		logger.debug("Param length : " + paramElements.getLength());
+		
+//		//<param name="driver" value="org.h2.Driver" />
+//		<param name="baseUrl" value="jdbc:h2:mem" />
+//		<param name="dbName" value="bitirme" />
+//		<param name="dbUser" value="wora" />
+//		<param name="dbPassword" value="wora" />
+//		<param name="mode" value="Derby" />
+//		<param name="delay" value="-1" />
+		for(int i=0; i< paramElements.getLength(); i++){
+			Element param = (Element) paramElements.item(i);
+			
+			String name = param.getAttribute("name");
+			String value = param.getAttribute("value");
+			
+			if("driver".equalsIgnoreCase(name)){
+				dbDriver = value;
+			}else if("baseUrl".equals(name)){
+				jdbcURL = value;
+			}else if("dbName".equalsIgnoreCase(name)){
+				dbName = value;
+			}else if("dbPassword".equalsIgnoreCase(name)){
+				dbPassword = value;
+			}else if("dbUser".equalsIgnoreCase(name)){
+				dbUserName = value;
+			}else if("mode".equalsIgnoreCase(name)){
+				dbMode = value;
+			}else if("delay".equalsIgnoreCase(name)){
+				delay = Integer.parseInt(value);
+			}
+		}
+		
+		jdbcURL = jdbcURL + ":" + dbName + ";MODE="+dbMode;
+		logger.debug(printDBProperties());
+		
 		checkDbConnection();
 		logger.debug("Database object is initialized");
 	}
@@ -175,4 +212,11 @@ public abstract class AbstractDBService {
 		}
 	}
 
+	public String printDBProperties() {
+		return "AbstractDBService [dbConnection=" + dbConnection + ", jdbcURL=" + jdbcURL + ", dbName=" + dbName + ", dbUserName=" + dbUserName
+				+ ", dbPassword=" + dbPassword + ", dbValidationQuery=" + dbValidationQuery + ", dbDriver=" + dbDriver + ", dbMode=" + dbMode + ", delay="
+				+ delay + "]";
+	}
+
+		
 }

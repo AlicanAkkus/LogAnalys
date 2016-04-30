@@ -1,0 +1,162 @@
+2016-04-29 22:49:33 DEBUG Analys:47 - Log4j intitialized..
+2016-04-29 22:49:33 DEBUG Analys:222 - initializeDbService is started.
+2016-04-29 22:49:36 DEBUG AbstractDBService:39 - Db initalizing..
+2016-04-29 22:49:38 DEBUG AbstractDBService:42 - Param length : 7
+2016-04-29 22:49:50 DEBUG AbstractDBService:75 - AbstractDBService [dbConnection=null, jdbcURL=jdbc:h2:mem:bitirme;MODE=Derby, dbName=bitirme, dbUserName=wora, dbPassword=wora, dbValidationQuery=, dbDriver=org.h2.Driver, dbMode=Derby, delay=-1]
+2016-04-29 22:50:05 DEBUG AbstractDBService:91 - get Db Connection 
+2016-04-29 22:50:05 DEBUG AbstractDBService:95 - Connection taken 
+2016-04-29 22:50:08 DEBUG AbstractDBService:78 - Database object is initialized
+2016-04-29 22:50:08 DEBUG AbstractDBService:176 - Checking metadata...
+2016-04-29 22:50:08 DEBUG AbstractDBService:103 - DB connection validating....
+2016-04-29 22:50:08 DEBUG AbstractDBService:109 - Creating statement validateDbConnection : 
+2016-04-29 22:50:08 DEBUG AbstractDBService:183 - METHOD_ANALYS does not exist. Creating table : METHOD_ANALYS
+2016-04-29 22:50:08 INFO  AbstractDBService:212 - Creating METHOD_ANALYS table....
+2016-04-29 22:50:08 DEBUG AbstractDBService:188 - METHOD_ANALYS does not exist. Creating table : VARIABLE_ANALYS
+2016-04-29 22:50:08 INFO  AbstractDBService:239 - Creating VARIABLE_ANALYS Table....
+2016-04-29 22:50:09 DEBUG AbstractDBService:193 - METHOD_ANALYS does not exist. Creating table : CONTEXT_INITIALIZE_ANALYS
+2016-04-29 22:50:09 INFO  AbstractDBService:265 - Creating CONTEXT_INITIALIZE_ANALYS Table....
+2016-04-29 22:50:09 DEBUG AbstractDBService:198 - METHOD_ANALYS does not exist. Creating table : CONTEXT_INITIALIZE_ANALYS
+2016-04-29 22:50:09 INFO  AbstractDBService:293 - Creating CONTEXT_DESTROY_ANALYS Table....
+2016-04-29 22:50:09 DEBUG AbstractDBService:172 - DBService - cleanUpDatabase begin..
+2016-04-29 22:50:09 DEBUG AbstractDBService:174 - cleanUpDatabase end..
+2016-04-29 22:50:09 DEBUG AbstractDBService:103 - DB connection validating....
+2016-04-29 22:50:09 INFO  AbstractDBService:321 - Maintaining table : CONTEXT_DESTROY_ANALYS
+2016-04-29 22:50:09 ERROR AbstractDBService:328 - org.h2.jdbc.JdbcSQLException: Function "SYSCS_COMPRESS_TABLE" not found; SQL statement:
+CALL SYSCS_UTIL.SYSCS_COMPRESS_TABLE(?, ?, ?) [90022-191]
+org.h2.jdbc.JdbcSQLException: Function "SYSCS_COMPRESS_TABLE" not found; SQL statement:
+CALL SYSCS_UTIL.SYSCS_COMPRESS_TABLE(?, ?, ?) [90022-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.readJavaFunction(Parser.java:2405)
+	at org.h2.command.Parser.readFunction(Parser.java:2457)
+	at org.h2.command.Parser.readTermObjectDot(Parser.java:2666)
+	at org.h2.command.Parser.readTerm(Parser.java:2784)
+	at org.h2.command.Parser.readFactor(Parser.java:2308)
+	at org.h2.command.Parser.readSum(Parser.java:2295)
+	at org.h2.command.Parser.readConcat(Parser.java:2265)
+	at org.h2.command.Parser.readCondition(Parser.java:2115)
+	at org.h2.command.Parser.readAnd(Parser.java:2087)
+	at org.h2.command.Parser.readExpression(Parser.java:2079)
+	at org.h2.command.Parser.parseCall(Parser.java:4457)
+	at org.h2.command.Parser.parsePrepared(Parser.java:362)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:73)
+	at org.h2.jdbc.JdbcCallableStatement.<init>(JdbcCallableStatement.java:52)
+	at org.h2.jdbc.JdbcConnection.prepareCall(JdbcConnection.java:898)
+	at com.wora.db.H2DaoImpl.compressTable(H2DaoImpl.java:322)
+	at com.wora.db.H2DaoImpl.maintainTables(H2DaoImpl.java:342)
+	at com.wora.db.H2DaoImpl.checkDbMetaData(H2DaoImpl.java:203)
+	at com.wora.main.Analys.initializeDbService(Analys.java:228)
+	at com.wora.main.Analys.initializeServices(Analys.java:78)
+	at com.wora.main.Analys.main(Analys.java:74)
+2016-04-29 22:50:09 INFO  AbstractDBService:321 - Maintaining table : CONTEXT_INITIALIZE_ANALYS
+2016-04-29 22:50:09 ERROR AbstractDBService:328 - org.h2.jdbc.JdbcSQLException: Function "SYSCS_COMPRESS_TABLE" not found; SQL statement:
+CALL SYSCS_UTIL.SYSCS_COMPRESS_TABLE(?, ?, ?) [90022-191]
+org.h2.jdbc.JdbcSQLException: Function "SYSCS_COMPRESS_TABLE" not found; SQL statement:
+CALL SYSCS_UTIL.SYSCS_COMPRESS_TABLE(?, ?, ?) [90022-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.readJavaFunction(Parser.java:2405)
+	at org.h2.command.Parser.readFunction(Parser.java:2457)
+	at org.h2.command.Parser.readTermObjectDot(Parser.java:2666)
+	at org.h2.command.Parser.readTerm(Parser.java:2784)
+	at org.h2.command.Parser.readFactor(Parser.java:2308)
+	at org.h2.command.Parser.readSum(Parser.java:2295)
+	at org.h2.command.Parser.readConcat(Parser.java:2265)
+	at org.h2.command.Parser.readCondition(Parser.java:2115)
+	at org.h2.command.Parser.readAnd(Parser.java:2087)
+	at org.h2.command.Parser.readExpression(Parser.java:2079)
+	at org.h2.command.Parser.parseCall(Parser.java:4457)
+	at org.h2.command.Parser.parsePrepared(Parser.java:362)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:73)
+	at org.h2.jdbc.JdbcCallableStatement.<init>(JdbcCallableStatement.java:52)
+	at org.h2.jdbc.JdbcConnection.prepareCall(JdbcConnection.java:898)
+	at com.wora.db.H2DaoImpl.compressTable(H2DaoImpl.java:322)
+	at com.wora.db.H2DaoImpl.maintainTables(H2DaoImpl.java:342)
+	at com.wora.db.H2DaoImpl.checkDbMetaData(H2DaoImpl.java:203)
+	at com.wora.main.Analys.initializeDbService(Analys.java:228)
+	at com.wora.main.Analys.initializeServices(Analys.java:78)
+	at com.wora.main.Analys.main(Analys.java:74)
+2016-04-29 22:50:09 INFO  AbstractDBService:321 - Maintaining table : METHOD_ANALYS
+2016-04-29 22:50:09 ERROR AbstractDBService:328 - org.h2.jdbc.JdbcSQLException: Function "SYSCS_COMPRESS_TABLE" not found; SQL statement:
+CALL SYSCS_UTIL.SYSCS_COMPRESS_TABLE(?, ?, ?) [90022-191]
+org.h2.jdbc.JdbcSQLException: Function "SYSCS_COMPRESS_TABLE" not found; SQL statement:
+CALL SYSCS_UTIL.SYSCS_COMPRESS_TABLE(?, ?, ?) [90022-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.readJavaFunction(Parser.java:2405)
+	at org.h2.command.Parser.readFunction(Parser.java:2457)
+	at org.h2.command.Parser.readTermObjectDot(Parser.java:2666)
+	at org.h2.command.Parser.readTerm(Parser.java:2784)
+	at org.h2.command.Parser.readFactor(Parser.java:2308)
+	at org.h2.command.Parser.readSum(Parser.java:2295)
+	at org.h2.command.Parser.readConcat(Parser.java:2265)
+	at org.h2.command.Parser.readCondition(Parser.java:2115)
+	at org.h2.command.Parser.readAnd(Parser.java:2087)
+	at org.h2.command.Parser.readExpression(Parser.java:2079)
+	at org.h2.command.Parser.parseCall(Parser.java:4457)
+	at org.h2.command.Parser.parsePrepared(Parser.java:362)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:73)
+	at org.h2.jdbc.JdbcCallableStatement.<init>(JdbcCallableStatement.java:52)
+	at org.h2.jdbc.JdbcConnection.prepareCall(JdbcConnection.java:898)
+	at com.wora.db.H2DaoImpl.compressTable(H2DaoImpl.java:322)
+	at com.wora.db.H2DaoImpl.maintainTables(H2DaoImpl.java:342)
+	at com.wora.db.H2DaoImpl.checkDbMetaData(H2DaoImpl.java:203)
+	at com.wora.main.Analys.initializeDbService(Analys.java:228)
+	at com.wora.main.Analys.initializeServices(Analys.java:78)
+	at com.wora.main.Analys.main(Analys.java:74)
+2016-04-29 22:50:09 INFO  AbstractDBService:321 - Maintaining table : VARIABLE_ANALYS
+2016-04-29 22:50:09 ERROR AbstractDBService:328 - org.h2.jdbc.JdbcSQLException: Function "SYSCS_COMPRESS_TABLE" not found; SQL statement:
+CALL SYSCS_UTIL.SYSCS_COMPRESS_TABLE(?, ?, ?) [90022-191]
+org.h2.jdbc.JdbcSQLException: Function "SYSCS_COMPRESS_TABLE" not found; SQL statement:
+CALL SYSCS_UTIL.SYSCS_COMPRESS_TABLE(?, ?, ?) [90022-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.readJavaFunction(Parser.java:2405)
+	at org.h2.command.Parser.readFunction(Parser.java:2457)
+	at org.h2.command.Parser.readTermObjectDot(Parser.java:2666)
+	at org.h2.command.Parser.readTerm(Parser.java:2784)
+	at org.h2.command.Parser.readFactor(Parser.java:2308)
+	at org.h2.command.Parser.readSum(Parser.java:2295)
+	at org.h2.command.Parser.readConcat(Parser.java:2265)
+	at org.h2.command.Parser.readCondition(Parser.java:2115)
+	at org.h2.command.Parser.readAnd(Parser.java:2087)
+	at org.h2.command.Parser.readExpression(Parser.java:2079)
+	at org.h2.command.Parser.parseCall(Parser.java:4457)
+	at org.h2.command.Parser.parsePrepared(Parser.java:362)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:73)
+	at org.h2.jdbc.JdbcCallableStatement.<init>(JdbcCallableStatement.java:52)
+	at org.h2.jdbc.JdbcConnection.prepareCall(JdbcConnection.java:898)
+	at com.wora.db.H2DaoImpl.compressTable(H2DaoImpl.java:322)
+	at com.wora.db.H2DaoImpl.maintainTables(H2DaoImpl.java:342)
+	at com.wora.db.H2DaoImpl.checkDbMetaData(H2DaoImpl.java:203)
+	at com.wora.main.Analys.initializeDbService(Analys.java:228)
+	at com.wora.main.Analys.initializeServices(Analys.java:78)
+	at com.wora.main.Analys.main(Analys.java:74)
