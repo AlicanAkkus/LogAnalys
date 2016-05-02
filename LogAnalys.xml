@@ -44,6 +44,13 @@
 			<param name="dbUser" value="wora" />
 			<param name="dbPassword" value="wora" />
 		</destination>
+		<destination id="socketDestination" class="com.wora.adaptor.SocketAdaptor">
+			<param name="serverAdress" value="127.0.0.1" />
+			<param name="serverPort" value="5003" />
+			<param name="bufferSize" value="2048" />
+			<param name="idleTime" value="60" />
+			<param name="delay" value="1000" />
+		</destination>
 	</destinations>
 
 	<files>
@@ -86,6 +93,7 @@
 
 			<file name="myFile" source="myLog" />
 			<destination name="DbDest" source="dbDestination" />
+			<destination name="SocketDest" source="socketDestination" />
 		</template>
 	</templates>
 

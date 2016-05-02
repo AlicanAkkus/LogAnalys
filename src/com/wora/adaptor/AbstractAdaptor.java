@@ -14,7 +14,6 @@ public abstract class AbstractAdaptor extends Thread{
 	Vector<Object> messageQueue = new Vector<>();
 	
 	public abstract void init(Element destination);
-	
 	public abstract void processMessage(Object message);
 	
 	@Override

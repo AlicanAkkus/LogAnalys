@@ -1,6 +1,7 @@
 package com.wora.db;
 
-import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -36,7 +37,7 @@ public class H2DaoImpl extends AbstractDBService {
 				LinkedList<LineBean> columns = template.getDataLine();
 
 				StringBuilder createScript = new StringBuilder("create table ").append(tableName).append("(");
-
+				StringBuilder selectScript = new StringBuilder("select * from ").append(tableName);
 				createScript.append("ID int not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) , ");
 				for (LineBean column : columns) {
 					createScript.append(column.getName()).append(" varchar, ");
@@ -45,10 +46,12 @@ public class H2DaoImpl extends AbstractDBService {
 				createScript.delete(createScript.lastIndexOf(","), createScript.length());
 				createScript.append(" )");
 				logger.debug("Create script : " + createScript.toString());
-				
+
 				Statement statement = dbConnection.createStatement();
 				statement.execute(createScript.toString());
+				statement.close();
 
+				select(selectScript);
 			}
 
 			cleanUpDatabase();
@@ -58,6 +61,24 @@ public class H2DaoImpl extends AbstractDBService {
 		}
 	}
 
+	private void select(StringBuilder select){
+		checkDbConnection();
+		
+		try {
+			Statement statement = dbConnection.createStatement();
+			ResultSet rs = statement.executeQuery(select.toString());
+			
+			if(rs.next()){
+				
+			}else{
+				logger.info("table empty!");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private void createMethodAnalysTable() {
 
 		logger.info("Creating METHOD_ANALYS table....");
