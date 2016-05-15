@@ -1,15 +1,9 @@
 package com.wora.main;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.xml.transform.TransformerException;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -41,7 +35,7 @@ public class Analys {
 	private ConcurrentHashMap<String, HadoopFile> filesPool = new ConcurrentHashMap<String, HadoopFile>();
 	private ConcurrentHashMap<String, AbstractAdaptor> adaptorsPool = new ConcurrentHashMap<String, AbstractAdaptor>();
 
-	public Analys() {
+	private Analys() {
 		DOMConfigurator.configure("templates/log4j.xml");
 		logger = Logger.getLogger(Analys.class);
 		logger.debug("Log4j intitialized..");
@@ -172,6 +166,7 @@ public class Analys {
 			if (files.getLength() == 0) {
 				throw new RuntimeException("Minimum one destinations required for template!");
 			}
+			
 			LinkedList<AbstractAdaptor> adaptors = new LinkedList<AbstractAdaptor>();
 			for(int ii=0; ii<destioanitons.getLength(); ii++){
 				Element destinationElement = (Element) destioanitons.item(ii);
@@ -191,7 +186,9 @@ public class Analys {
 			for (int j = 0; j < paramList.getLength(); j++) {
 				Element param = (Element) paramList.item(j);
 				if (!param.getAttribute("name").equalsIgnoreCase("dataLength")) {
-					params.put(param.getAttribute("name"), param.getAttribute("value"));
+					String name = param.getAttribute("name");
+					String value = param.getAttribute("value");
+					params.put(name, value);
 				} else {
 					int length = Integer.valueOf(param.getAttribute("value"));
 					NodeList lineParams = XPathAPI.selectNodeList(templateElement, "//templates/template[@id = '"+ hadoopTemplate.getId() +"']/param/param");
@@ -205,14 +202,22 @@ public class Analys {
 					for (int k = 0; k < lineParams.getLength(); k++) {
 						// <param name="dateOfData" sequence="1" description="log data date" />
 						Element lineParam = (Element) lineParams.item(k);
-						dataLine.add(new LineBean(lineParam.getAttribute("name"), lineParam.getAttribute("description"), Integer.valueOf(lineParam
-								.getAttribute("sequence"))));
+						LineBean lineBean = new LineBean();
+						lineBean.setDescpriton(lineParam.getAttribute("description"));
+						lineBean.setFormat(lineParam.getAttribute("format"));
+						lineBean.setName(lineParam.getAttribute("name"));
+						lineBean.setType(lineParam.getAttribute("type"));
+						lineBean.setPattern(lineParam.getAttribute("pattern"));
+						lineBean.setSequence(Integer.valueOf(lineParam.getAttribute("sequence")));
+						
+						dataLine.add(lineBean);
 					}
 					hadoopTemplate.setDataLine(dataLine);
 
 				}
 			}
 
+			hadoopTemplate.setParams(params);
 			templatesPool.put(hadoopTemplate.getId(), hadoopTemplate);
 		}
 
@@ -262,6 +267,22 @@ public class Analys {
 			logger.error(e, e);
 		}
 
+	}
+
+	public ConcurrentHashMap<String, HadoopTemplate> getTemplatesPool() {
+		return templatesPool;
+	}
+
+	public ConcurrentHashMap<String, HadoopFile> getFilesPool() {
+		return filesPool;
+	}
+
+	public ConcurrentHashMap<String, AbstractAdaptor> getAdaptorsPool() {
+		return adaptorsPool;
+	}
+
+	public void setDbService(AbstractDBService dbService) {
+		this.dbService = dbService;
 	}
 
 }

@@ -5,14 +5,11 @@ public class LineBean {
 	String name;
 	String descpriton;
 	int sequence;
+	String format;
+	String pattern;
+	String type;
 	
 	
-	public LineBean(String name, String descpriton, int sequence) {
-		super();
-		this.name = name;
-		this.descpriton = descpriton;
-		this.sequence = sequence;
-	}
 	public String getName() {
 		return name;
 	}
@@ -32,9 +29,29 @@ public class LineBean {
 		this.sequence = sequence;
 	}
 	
+	public String getFormat() {
+		return format;
+	}
+	public void setFormat(String format) {
+		this.format = format;
+	}
+	public String getPattern() {
+		return pattern;
+	}
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	@Override
 	public String toString() {
-		return "LineBean [name=" + name + ", descpriton=" + descpriton + ", sequence=" + sequence + "]";
+		return "LineBean [name=" + name + ", descpriton=" + descpriton + ", sequence=" + sequence + ", format=" + format + ", pattern=" + pattern + ", type="
+				+ type + "]";
 	}
 	
 }

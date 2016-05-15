@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analys>
 	
+	<!-- dont touch -->
 	<database>
 		<param name="driver" value="org.h2.Driver" />
 		<param name="baseUrl" value="jdbc:h2:mem" />
@@ -62,15 +63,16 @@
 
 	<templates>
 		<template id="methodTemplate" name="MethodLog">
-			<param name="startChar" value="2" /> <!-- ASCII 2 = STX -->
-			<param name="endChar" value="3" /> <!-- ASCII 3 = ETX -->
-			<param name="delimeterChar" value="26" /> <!-- ASCII 26 = SUB -->
-			<!-- sample log data : <STX><SUB>05 Jan 2016 10:57:21<SUB>contextInitialized<SUB>Log4j and Scheduler job initialized<SUB>175<SUB><ETX> -->
+			<param name="startChar" value="2" /> <!-- ASCII 2 = STX  default value STX -->
+			<param name="endChar" value="3" /> <!-- ASCII 3 = ETX default value ETX -->
+			<param name="delimeterChar" value="26" /> <!-- ASCII 26 = SUB default value SUB -->
+			<!-- sample log data : <STX><SUB>05-11-2016<SUB>contextInitialized<SUB>Log4j and Scheduler job initialized<SUB>175<SUB><ETX> -->
 			<param name="dataLength" value="4">
-				<param name="dateOfData" type="date" sequence="1" description="log data date" />
-				<param name="methodName" type="string" sequence="2" description="method name" />
-				<param name="methodDesc" type="string" sequence="3" description="method description" />
-				<param name="methodRunningTime" type="integer" sequence="4" description="method running time" />
+				<param name="dateOfData" type="date" sequence="1" description="log data date" format="dd-M-yyyy" pattern="less than %05-12-2016%" /><!-- equals to 'lt %05-11-2016%' -->
+				<param name="methodName" type="string" sequence="2" description="method name" pattern="if equals %contextInitialized%" /><!-- equals to '== %contextInitialized%' -->
+				<!--  default format 'text' -->
+				<param name="methodDesc" type="string" sequence="3" description="method description" pattern="if like %starting server%"/><!-- equals to '<> %contextInitialized%' -->
+				<param name="methodRunningTime" type="integer" sequence="4" description="method running time" pattern="greater than %100%"/><!-- equals to 'gt %100%' -->
 			</param>
 			<param name="pattern" value="a-zA-z0-9" /> <!-- text pattern -->
 
@@ -82,12 +84,12 @@
 		<template id="loopTemplate" name="LoopLog">
 			<param name="startChar" value="2" /> <!-- ASCII 2 = STX -->
 			<param name="endChar" value="3" /> <!-- ASCII 3 = ETX -->
-			<param name="delimeterChar" value="21" /> <!-- ASCII 26 = NAK -->
+			<param name="delimeterChar" value="26" /> <!-- ASCII 26 = NAK -->
 			<!-- sample log data : <STX><NAK>05 Jan 2016 10:57:21<NAK>convert object to person<NAK>102<ETX> -->
 			<param name="dataLength" value="3">
-				<param name="dateOfData" sequence="1" description="log data date" />
-				<param name="loopDesc" sequence="2" description="loop desciption" />
-				<param name="loopSize" sequence="3" description="loop size" />
+				<param name="dateOfData" type="date"  sequence="1" description="log data date" format="dd-M-yyyy" pattern="less than %05-12-2016%" />
+				<param name="loopDesc" type="string"  sequence="2" description="loop desciption" pattern="if equals %contextDestroyed%"/>
+				<param name="loopSize" type="integer" sequence="3" description="loop size" pattern="greater than %100%"/>
 			</param>
 			<param name="pattern" value="a-zA-z0-9" /> <!-- text pattern -->
 

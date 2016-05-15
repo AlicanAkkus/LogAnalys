@@ -1,30 +1,44 @@
 package com.wora.main;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
-import org.apache.hadoop.io.Text;
+import org.w3c.dom.Document;
 
 import com.wora.constant.IOConstant;
-import com.wora.util.ParseLineBean;
+import com.wora.template.HadoopTemplate;
+import com.wora.util.XmlUtils;
 
 public class Test implements IOConstant {
-	static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyy hh:mm:ss", Locale.ENGLISH);
-
 	public static void main(String[] args) throws Exception {
+		
+		
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-M-yyyy");
+//		
+//		Date date1 = dateFormat.parse("05-11-2016");
+//		Date date2 = dateFormat.parse("05-12-2016");
+//		System.out.println("Date1 : " + date1);
+//		System.out.println("Date2 : " + date2);
+//		
+//		if(date1.before(date2)){
+//			System.out.println("beforee");
+//		}else{
+//			System.out.println("agteer");
+//		}
+		
+		Analys analys = Analys.getInstance();
+		Document confXml = XmlUtils.loadXmlFromFile("LogAnalys.xml");
+		analys.initializeServices(confXml);
+		
+		StringBuilder data = new StringBuilder();
+		data.append(STX).append(SUB).append("05-11-2016").append(SUB).append("contextInitialized").append(SUB).append("starting server");
+		data.append(SUB).append("175").append(SUB).append(ETX);
+	//	String data = "<STX><SUB>05-11-2016<SUB>contextInitialized<SUB>starting server<SUB>175<SUB><ETX>";
 
-		// String fileName = "LogMonitor.properties";
-		//
-		// File file = new File(fileName);
-		// Properties properties = new Properties();
-		// properties.load(new FileInputStream(file));
-		//
-		// Tomcat7 tomcat7 = new Tomcat7();
-		// tomcat7.initialize(properties);
-		// tomcat7.startTomcat();
-
-		String text = "02 Jan 2016 06:36:21getChangeDealerEmployee4";
-		//ParseLineBean.parseMethod(new Text(text));
-
+		for(HadoopTemplate hadoopTemplate : analys.getInstance().getTemplatesPool().values()){
+			hadoopTemplate.test(data.toString());
+		}
+		
+		
+		
+		
+		
 	}
 }

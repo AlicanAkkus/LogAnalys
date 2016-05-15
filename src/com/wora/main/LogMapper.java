@@ -20,7 +20,7 @@ public class LogMapper extends Mapper<LongWritable, Text, Text, IntWritable> imp
 	@Override
 	public void map(LongWritable key, Text value, Mapper.Context context) throws IOException, InterruptedException {
 		String data = value.toString();
-		int beginOfText = data.indexOf(START_OF_TEXT), endOfText = data.indexOf(END_OF_TEXT);
+		int beginOfText = data.indexOf(STX), endOfText = data.indexOf(ETX);
 
 		// logger daki ilgilendigimiz kisimlari alalim sadece.
 		if (beginOfText != -1 && endOfText != -1 && beginOfText != endOfText) {

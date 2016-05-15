@@ -40,7 +40,21 @@ public class H2DaoImpl extends AbstractDBService {
 				StringBuilder selectScript = new StringBuilder("select * from ").append(tableName);
 				createScript.append("ID int not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) , ");
 				for (LineBean column : columns) {
-					createScript.append(column.getName()).append(" varchar, ");
+					String type = " varchar, ";
+
+					switch (column.getType()) {
+					case "date":
+						type = " date, ";
+						break;
+					case "string":
+						break;
+					case "integer":
+						type=" integer, ";
+						break;
+					default:
+						break;
+					}
+					createScript.append(column.getName()).append(type);
 				}
 
 				createScript.delete(createScript.lastIndexOf(","), createScript.length());
@@ -61,24 +75,24 @@ public class H2DaoImpl extends AbstractDBService {
 		}
 	}
 
-	private void select(StringBuilder select){
+	private void select(StringBuilder select) {
 		checkDbConnection();
-		
+
 		try {
 			Statement statement = dbConnection.createStatement();
 			ResultSet rs = statement.executeQuery(select.toString());
-			
-			if(rs.next()){
-				
-			}else{
+
+			if (rs.next()) {
+
+			} else {
 				logger.info("table empty!");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void createMethodAnalysTable() {
 
 		logger.info("Creating METHOD_ANALYS table....");
